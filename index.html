@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TONNANO — Boston</title>
+<meta name="description" content="TONNANO has arrived in Boston. Premium, numbered menswear built for the city's builders, students and creatives. Made in Morocco. Delivered to Boston.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#070707;
+  --panel:#111111;
+  --line:#262626;
+  --white:#f5f3ef;
+  --grey:#8f8f8a;
+  --orange:#ff6a00;
+  --brick:#8a3324;
+  --serif:'Bodoni Moda', 'Playfair Display', serif;
+  --sans:'Inter', -apple-system, sans-serif;
+  --mono:'Space Mono', monospace;
+  --ease:cubic-bezier(.16,.84,.32,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--sans);overflow-x:hidden;}
+::selection{background:var(--orange);color:#000;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+img{display:block;max-width:100%;}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease), transform 1s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:12px;}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--orange);}
+.section{padding:130px 6vw;position:relative;}
+.section-head{max-width:640px;margin-bottom:64px;}
+.section-head h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.1rem,4.4vw,3.4rem);line-height:1.08;margin-top:18px;}
+.section-head p{color:var(--grey);font-size:1rem;line-height:1.7;margin-top:20px;max-width:520px;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--orange);color:#000;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  padding:16px 34px;transition:transform .4s var(--ease), box-shadow .4s var(--ease), background .3s;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(255,106,0,.28);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--line);color:var(--white);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:15px 32px;transition:border-color .35s, transform .35s var(--ease);
+}
+.btn-ghost:hover{border-color:var(--orange);transform:translateY(-3px);}
+
+/* ===== BOARDING LOADER ===== */
+#loader{position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center;
+  transition:opacity .9s var(--ease), visibility .9s var(--ease);}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.board{width:min(680px,88vw);text-align:center;}
+.board-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.3em;color:var(--grey);text-transform:uppercase;margin-bottom:22px;opacity:0;animation:fadeIn .8s .1s forwards;}
+.flap-row{display:flex;justify-content:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.flap{
+  width:46px;height:60px;background:#141414;border:1px solid var(--line);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  font-family:var(--serif);font-size:1.9rem;color:var(--orange);
+}
+.flap::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:#000;opacity:.6;}
+.board-sub{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;color:var(--grey);margin-top:26px;opacity:0;animation:fadeIn .8s .2s forwards;}
+.board-route{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:8px;opacity:0;animation:fadeIn .8s .3s forwards;}
+.board-route span{font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;color:var(--white);}
+.board-route .path{width:120px;height:1px;background:var(--line);position:relative;}
+.board-route .path::after{content:'';position:absolute;left:0;top:-2px;width:6px;height:5px;background:var(--orange);animation:fly 2.4s linear infinite;}
+@keyframes fly{0%{left:0;}100%{left:114px;}}
+@keyframes fadeIn{to{opacity:1;}}
+.wordmark-reveal{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#050505;opacity:0;pointer-events:none;
+}
+.wordmark-reveal.show{animation:wordmarkShow 2.4s var(--ease) forwards;}
+.wordmark-reveal h1{
+  font-family:var(--serif);font-weight:500;letter-spacing:.16em;
+  font-size:clamp(2.4rem,8vw,5.2rem);color:var(--white);
+  transform:scale(1.12);opacity:0;
+}
+.wordmark-reveal.show h1{animation:wordmarkText 2.2s var(--ease) forwards;}
+.wordmark-reveal .wm-line{width:0;height:1px;background:var(--orange);margin-top:22px;}
+.wordmark-reveal.show .wm-line{animation:wmLine 1.4s .5s var(--ease) forwards;}
+@keyframes wordmarkShow{0%{opacity:0;}15%{opacity:1;}80%{opacity:1;}100%{opacity:0;}}
+@keyframes wordmarkText{0%{opacity:0;transform:scale(1.12);}55%{opacity:1;transform:scale(1);}100%{opacity:1;transform:scale(1.02);}}
+@keyframes wmLine{to{width:140px;}}
+
+/* ===== CATEGORY TABS ===== */
+.cat-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px;}
+.cat-tab{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--grey);border:1px solid var(--line);padding:11px 22px;transition:all .4s var(--ease);
+}
+.cat-tab:hover{color:var(--white);border-color:var(--grey);}
+.cat-tab.active{color:#000;background:var(--orange);border-color:var(--orange);}
+.collection-grid{transition:opacity .4s var(--ease), transform .4s var(--ease);}
+.collection-grid.switching{opacity:0;transform:translateY(10px);}
+.product-card.hidden-cat{display:none;}
+
+/* ===== HEADER ===== */
+header{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;
+  padding:26px 5vw;transition:background .5s var(--ease), backdrop-filter .5s var(--ease), padding .4s var(--ease), border-color .5s var(--ease);
+  border-bottom:1px solid transparent;}
+header.scrolled{background:rgba(7,7,7,.68);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  padding:16px 5vw;border-bottom:1px solid var(--line);}
+.logo{font-family:var(--serif);font-size:1.3rem;letter-spacing:.1em;font-weight:500;display:flex;align-items:center;gap:10px;}
+.logo span{color:var(--orange);}
+.logo .tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--grey);border:1px solid var(--line);padding:3px 8px;border-radius:20px;text-transform:uppercase;}
+nav.desktop-nav{display:flex;gap:44px;}
+nav.desktop-nav a{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);position:relative;padding-bottom:4px;transition:color .35s;}
+nav.desktop-nav a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--orange);transition:width .4s var(--ease);}
+nav.desktop-nav a:hover{color:var(--white);}
+nav.desktop-nav a:hover::after{width:100%;}
+.nav-cta{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--orange);color:var(--orange);padding:10px 22px;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .35s, color .35s;}
+.nav-cta:hover{background:var(--orange);color:#000;transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,106,0,.25);}
+.burger{display:none;flex-direction:column;gap:5px;width:26px;z-index:600;}
+.burger span{display:block;width:100%;height:1px;background:var(--white);transition:transform .4s var(--ease), opacity .3s;}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mobile-menu{position:fixed;inset:0;background:rgba(5,5,5,.98);z-index:450;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  opacity:0;visibility:hidden;transition:opacity .5s var(--ease), visibility .5s var(--ease);}
+.mobile-menu.open{opacity:1;visibility:visible;}
+.mobile-menu a{font-family:var(--serif);font-size:2rem;opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease), transform .5s var(--ease);}
+.mobile-menu.open a{opacity:1;transform:translateY(0);}
+.mobile-menu.open a:nth-child(1){transition-delay:.1s;}
+.mobile-menu.open a:nth-child(2){transition-delay:.18s;}
+.mobile-menu.open a:nth-child(3){transition-delay:.26s;}
+.mobile-menu.open a:nth-child(4){transition-delay:.34s;}
+.mobile-menu.open a:nth-child(5){transition-delay:.42s;}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background-image:url('images/hero.jpg');background-size:cover;background-position:center 18%;
+  transform:scale(1.08);animation:heroZoom 9s var(--ease) forwards;}
+@keyframes heroZoom{to{transform:scale(1);}}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg, rgba(7,7,7,.15) 0%, rgba(7,7,7,.35) 45%, rgba(7,7,7,.96) 100%);}
+.hero-inner{position:relative;z-index:2;padding:0 6vw 90px;width:100%;}
+.hero-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;color:var(--orange);text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px;}
+.hero-eyebrow::before{content:'';width:26px;height:1px;background:var(--orange);}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,7.4vw,6.2rem);line-height:.98;letter-spacing:-.01em;}
+.hero h1 em{font-style:italic;color:var(--orange);}
+.hero .sub{max-width:520px;color:#d8d5cf;font-size:1.02rem;line-height:1.7;margin-top:26px;}
+.hero-cta-row{display:flex;align-items:center;gap:26px;margin-top:42px;flex-wrap:wrap;}
+.hero-meta{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--grey);}
+.scroll-cue{position:absolute;right:6vw;bottom:36px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.scroll-cue span{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;writing-mode:vertical-rl;}
+.scroll-cue .line{width:1px;height:52px;background:var(--line);position:relative;overflow:hidden;}
+.scroll-cue .line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--orange);animation:scrollDrop 2.2s var(--ease) infinite;}
+@keyframes scrollDrop{to{top:100%;}}
+
+/* ===== ABOUT ===== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-copy h2{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,3.6vw,3rem);line-height:1.1;margin:18px 0 26px;}
+.about-copy p{color:var(--grey);font-size:1rem;line-height:1.75;margin-bottom:18px;max-width:520px;}
+.about-stats{display:flex;gap:44px;margin-top:36px;}
+.about-stats div{display:flex;flex-direction:column;gap:6px;}
+.about-stats b{font-family:var(--serif);font-size:1.8rem;color:var(--orange);}
+.about-stats span{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;color:var(--grey);text-transform:uppercase;}
+.about-media img{width:100%;height:620px;object-fit:cover;object-position:top center;}
+
+/* ===== COLLECTION ===== */
+.collection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.product-card{background:var(--panel);border:1px solid var(--line);transition:transform .5s var(--ease), border-color .4s;}
+.product-card:hover{transform:translateY(-8px);border-color:var(--orange);}
+.product-img{aspect-ratio:4/5;overflow:hidden;}
+.product-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
+.product-card:hover .product-img img{transform:scale(1.05);}
+.product-info{padding:20px 22px 26px;}
+.product-info h3{font-family:var(--serif);font-size:1.2rem;font-weight:500;margin-bottom:6px;}
+.product-info span{display:block;font-family:var(--mono);font-size:.7rem;color:var(--grey);letter-spacing:.08em;margin-bottom:10px;}
+.product-info b{color:var(--orange);font-size:1rem;}
+.collection-cta{margin-top:56px;text-align:center;}
+
+/* ===== WHY ===== */
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.why-card{background:var(--black);padding:40px 32px;}
+.why-num{font-family:var(--mono);font-size:.72rem;color:var(--orange);letter-spacing:.1em;}
+.why-card h3{font-family:var(--serif);font-size:1.25rem;font-weight:500;margin:18px 0 14px;}
+.why-card p{color:var(--grey);font-size:.92rem;line-height:1.65;}
+
+/* ===== BOSTON ===== */
+.boston-section{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.boston-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center;}
+.boston-copy h2{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,3.6vw,3rem);line-height:1.1;margin:18px 0 26px;}
+.boston-copy p{color:var(--grey);font-size:1rem;line-height:1.75;margin-bottom:18px;max-width:540px;}
+.boston-list{margin-top:26px;display:flex;flex-direction:column;gap:14px;}
+.boston-list li{list-style:none;font-size:.92rem;color:var(--white);padding-left:26px;position:relative;}
+.boston-list li::before{content:'';position:absolute;left:0;top:8px;width:14px;height:1px;background:var(--orange);}
+.boston-visual{position:relative;display:flex;flex-direction:column;align-items:center;}
+.skyline-svg{width:100%;max-width:420px;height:auto;}
+.boston-tag{margin-top:18px;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--grey);text-transform:uppercase;}
+
+/* ===== TRUST ===== */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.trust-card{border-top:1px solid var(--line);padding-top:24px;}
+.trust-card h3{font-family:var(--serif);font-size:1.15rem;font-weight:500;margin-bottom:12px;}
+.trust-card p{color:var(--grey);font-size:.9rem;line-height:1.65;}
+
+/* ===== FINAL CTA ===== */
+.final-cta{padding:150px 6vw;text-align:center;position:relative;background:radial-gradient(ellipse at center, rgba(255,106,0,.06) 0%, rgba(7,7,7,0) 65%);}
+.final-cta-inner{max-width:640px;margin:0 auto;}
+.final-cta h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,4.6vw,3.6rem);line-height:1.08;margin:20px 0 22px;}
+.final-cta p{color:var(--grey);font-size:1rem;line-height:1.7;margin-bottom:38px;}
+.final-cta-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--line);padding:80px 6vw 30px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:50px;}
+.footer-brand p{color:var(--grey);font-size:.9rem;line-height:1.7;margin-top:18px;max-width:280px;}
+.footer-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-bottom:20px;}
+.footer-col a{display:block;font-size:.92rem;color:var(--white);margin-bottom:14px;transition:color .3s;}
+.footer-col a:hover{color:var(--orange);}
+.footer-bottom{display:flex;justify-content:space-between;margin-top:80px;padding-top:26px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.68rem;color:var(--grey);letter-spacing:.06em;}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:1200px){
+  nav.desktop-nav{gap:26px;}
+  nav.desktop-nav a{font-size:.68rem;}
+  .nav-cta{padding:9px 18px;font-size:.66rem;}
+}
+@media (max-width:1000px){
+  nav.desktop-nav, .nav-cta{display:none;}
+  .burger{display:flex;padding:10px;margin:-10px;}
+  .about-grid, .boston-grid{grid-template-columns:1fr;gap:50px;}
+  .about-media img{height:420px;}
+  .collection-grid{grid-template-columns:repeat(2,1fr);}
+  .why-grid{grid-template-columns:repeat(2,1fr);}
+  .trust-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .final-cta{padding:110px 6vw;}
+}
+@media (max-width:780px){
+  .section{padding:100px 6vw;}
+  .hero{min-height:100svh;}
+  .hero-inner{padding-bottom:70px;}
+  .scroll-cue{display:none;}
+  .about-stats{gap:30px;flex-wrap:wrap;}
+  .final-cta-row{flex-direction:column;align-items:stretch;}
+  .final-cta-row .btn-primary, .final-cta-row .btn-ghost{justify-content:center;}
+}
+@media (max-width:560px){
+  .section{padding:80px 6vw;}
+  .section-head{margin-bottom:44px;}
+  .collection-grid, .why-grid, .trust-grid{grid-template-columns:1fr;}
+  .about-media img{height:320px;}
+  .footer-grid{grid-template-columns:1fr;gap:36px;}
+  .footer-bottom{flex-direction:column;gap:10px;align-items:flex-start;}
+  .flap{width:28px;height:38px;font-size:1.1rem;}
+  .board-route{gap:10px;}
+  .board-route .path{width:50px;}
+  .board-route span{font-size:.66rem;}
+  .cat-tabs{gap:8px;}
+  .cat-tab{padding:9px 16px;font-size:.64rem;}
+  .hero-cta-row{gap:18px;}
+  .logo .tag{display:none;}
+  @keyframes fly{0%{left:0;}100%{left:44px;}}
+}
+@media (max-width:360px){
+  .flap{width:24px;height:34px;font-size:.95rem;}
+  .board-route .path{width:34px;}
+  @keyframes fly{0%{left:0;}100%{left:28px;}}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="board">
+    <div class="board-label">TONNANO DEPARTURES</div>
+    <div class="flap-row" id="flapRow"></div>
+    <div class="board-route">
+      <span>MARRAKECH</span>
+      <div class="path"></div>
+      <span>BOSTON</span>
+    </div>
+    <div class="board-sub">GATE 04 — NOW BOARDING</div>
+  </div>
+  <div class="wordmark-reveal" id="wordmarkReveal">
+    <div style="text-align:center;">
+      <h1>TONNANO</h1>
+      <div class="wm-line" style="margin-left:auto;margin-right:auto;"></div>
+    </div>
+  </div>
+</div>
+
+<div id="site-root">
+
+<header id="siteHeader">
+  <a href="#top" class="logo"><span>TONNANO</span><span class="tag">Boston</span></a>
+  <nav class="desktop-nav">
+    <a href="#collection">Collection</a>
+    <a href="#about">About</a>
+    <a href="#boston">Boston</a>
+    <a href="#trust">Details</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="nav-cta" id="navCtaBtn">Shop The Drop</button>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#collection">Collection</a>
+  <a href="#about">About</a>
+  <a href="#boston">Boston</a>
+  <a href="#trust">Details</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-shade"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">EST. 2024 — MADE IN MOROCCO — NOW LANDING STATESIDE</div>
+    <h1>TONNANO HAS<br><em>ARRIVED</em> IN BOSTON.</h1>
+    <p class="sub">A private-label menswear house built on numbered drops and obsessive construction — now open to the city that builds its own legends. This is the Inner Code, delivered.</p>
+    <div class="hero-cta-row">
+      <button class="btn-primary" id="heroCtaBtn">Shop The Boston Drop</button>
+      <span class="hero-meta">No. 009 — Live In Boston Now</span>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="line"></div></div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about">
+  <div class="about-grid">
+    <div class="about-copy reveal">
+      <div class="eyebrow">The Vision</div>
+      <h2>Not a drop-shipped<br>trend. A built label.</h2>
+      <p>TONNANO started with a simple refusal: no fast fashion, no filler collections, no logos for the sake of logos. Every piece is designed in-house, cut and sewn in Morocco, and released in small, numbered runs — because scarcity should mean something again.</p>
+      <p>"Time Builds Legends" isn't a tagline we bought. It's the whole method: fewer pieces, better fabric, longer attention. We'd rather make one hundred people obsess over a t-shirt than sell ten thousand people something forgettable.</p>
+      <div class="about-stats">
+        <div><b>2024</b><span>Founded</span></div>
+        <div><b>009</b><span>Current Drop</span></div>
+        <div><b>MA</b><span>Made In Morocco</span></div>
+      </div>
+    </div>
+    <div class="about-media reveal">
+      <img src="images/hero2.jpg" alt="Tonnano founder portrait, Boston">
+    </div>
+  </div>
+</section>
+
+<!-- ===== COLLECTION ===== -->
+<section class="section" id="collection">
+  <div class="section-head reveal">
+    <div class="eyebrow">The Boston Drop</div>
+    <h2>Five colorways.<br>One inner code.</h2>
+    <p>Heavyweight cotton, oversized cut, hand-finished embroidery. Each shirt carries the TONNANO mark up front and a signature back graphic — numbered, tagged, made in Morocco.</p>
+  </div>
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab active" data-cat="all">All</button>
+    <button class="cat-tab" data-cat="snake">Code Snake</button>
+    <button class="cat-tab" data-cat="legends">Time Builds Legends</button>
+    <button class="cat-tab" data-cat="inner-code">Inner Code</button>
+  </div>
+  <div class="collection-grid" id="collectionGrid">
+    <div class="product-card reveal in" data-cat="snake">
+      <div class="product-img"><img src="images/prod-snake1.jpg" alt="Tonnano Code Snake 009 black t-shirt"></div>
+      <div class="product-info"><h3>Code Snake 009</h3><span>Black / Red</span><b>$68</b></div>
+    </div>
+    <div class="product-card reveal in" data-cat="legends">
+      <div class="product-img"><img src="images/prod-purple.jpg" alt="Tonnano Time Builds Legends purple t-shirt"></div>
+      <div class="product-info"><h3>Time Builds Legends</h3><span>Dusk Purple</span><b>$68</b></div>
+    </div>
+    <div class="product-card reveal in" data-cat="legends">
+      <div class="product-img"><img src="images/prod-orange.jpg" alt="Tonnano sunset graphic orange t-shirt"></div>
+      <div class="product-info"><h3>Last Light</h3><span>Burnt Orange</span><b>$68</b></div>
+    </div>
+    <div class="product-card reveal in" data-cat="legends">
+      <div class="product-img"><img src="images/prod-black.jpg" alt="Tonnano embossed T monogram black t-shirt"></div>
+      <div class="product-info"><h3>Monogram T</h3><span>Jet Black</span><b>$72</b></div>
+    </div>
+    <div class="product-card reveal in" data-cat="inner-code">
+      <div class="product-img"><img src="images/prod-white.jpg" alt="Tonnano Inner Code arch graphic white t-shirt"></div>
+      <div class="product-info"><h3>Inner Code Arch</h3><span>Off White</span><b>$68</b></div>
+    </div>
+    <div class="product-card reveal in" data-cat="inner-code">
+      <div class="product-img"><img src="images/tee-arch.jpg" alt="Tonnano archway graphic white t-shirt back"></div>
+      <div class="product-info"><h3>Inner Code — Back</h3><span>Off White</span><b>$68</b></div>
+    </div>
+  </div>
+  <div class="collection-cta reveal"><button class="btn-ghost" id="collectionCtaBtn">View Full Collection</button></div>
+</section>
+
+<!-- ===== WHY TONNANO ===== -->
+<section class="section" id="why">
+  <div class="section-head reveal">
+    <div class="eyebrow">Why Tonnano</div>
+    <h2>Built different,<br>on purpose.</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <span class="why-num">01</span>
+      <h3>Numbered, Not Mass-Produced</h3>
+      <p>Every drop is capped. Once a code sells out, it doesn't restock in the same run — so what you wear stays rare.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-num">02</span>
+      <h3>Heavyweight, Hand-Finished</h3>
+      <p>280gsm cotton, embroidered logos, puff-print graphics. Built to hold shape wash after wash, not just look good on day one.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-num">03</span>
+      <h3>Made In Morocco</h3>
+      <p>Small-batch production with artisans we work with directly — not an anonymous overseas factory line.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-num">04</span>
+      <h3>Designed For Layering</h3>
+      <p>Oversized, structured fits that work as well under a coat in a Boston winter as they do alone in July.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOSTON ===== -->
+<section class="section boston-section" id="boston">
+  <div class="boston-grid">
+    <div class="boston-copy reveal">
+      <div class="eyebrow">Boston Market</div>
+      <h2>Built abroad.<br>Home in Boston.</h2>
+      <p>Boston doesn't do trends for the sake of trends — it does craft, heritage and quiet confidence, from Beacon Hill tailoring to the sneaker culture on Newbury Street. TONNANO fits that same register: an international label with real construction behind it, not another algorithm-fed streetwear name.</p>
+      <p>We're opening Boston as our first U.S. market on purpose. Students at Harvard, MIT, BU and Northeastern, young professionals downtown, and the city's creative community are exactly who this label was designed for — people who notice fabric weight before they notice a logo.</p>
+      <ul class="boston-list">
+        <li>Fast shipping across Greater Boston &amp; New England</li>
+        <li>Local pop-up drops announced first on Instagram</li>
+        <li>U.S. sizing guide fitted for the American cut</li>
+      </ul>
+    </div>
+    <div class="boston-visual reveal">
+      <svg viewBox="0 0 480 420" class="skyline-svg" aria-hidden="true">
+        <rect x="30" y="230" width="34" height="150" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <rect x="74" y="180" width="30" height="200" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <rect x="114" y="120" width="42" height="260" fill="none" stroke="#ff6a00" stroke-width="1.4"/>
+        <rect x="166" y="200" width="26" height="180" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <rect x="202" y="90" width="36" height="290" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <rect x="248" y="150" width="30" height="230" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <polygon points="278,150 293,120 308,150" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <rect x="308" y="210" width="28" height="170" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <rect x="346" y="160" width="34" height="220" fill="none" stroke="#ff6a00" stroke-width="1.4"/>
+        <rect x="390" y="240" width="28" height="140" fill="none" stroke="#3a3a3a" stroke-width="1.4"/>
+        <line x1="10" y1="380" x2="470" y2="380" stroke="#3a3a3a" stroke-width="1.4"/>
+        <line x1="220" y1="20" x2="220" y2="90" stroke="#ff6a00" stroke-width="1" stroke-dasharray="3 4"/>
+        <circle cx="220" cy="16" r="3" fill="#ff6a00"/>
+      </svg>
+      <div class="boston-tag">BOS — 42.3601° N</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST ===== -->
+<section class="section" id="trust">
+  <div class="section-head reveal">
+    <div class="eyebrow">The Fine Print, Done Right</div>
+    <h2>Buy with<br>total confidence.</h2>
+  </div>
+  <div class="trust-grid">
+    <div class="trust-card reveal"><h3>Quality Guarantee</h3><p>280gsm cotton, reinforced seams, colorfast dye. If a piece doesn't hold up, we make it right.</p></div>
+    <div class="trust-card reveal"><h3>Small-Batch Production</h3><p>Cut and sewn in Morocco in limited runs — never mass-produced, never diluted.</p></div>
+    <div class="trust-card reveal"><h3>Fast U.S. Shipping</h3><p>Dispatched to Boston and across the U.S. with tracked delivery on every order.</p></div>
+    <div class="trust-card reveal"><h3>Easy Returns</h3><p>30-day returns on unworn pieces. No arguments, no restocking games.</p></div>
+    <div class="trust-card reveal"><h3>Real Customer Support</h3><p>A real person answers — reachable by email and Instagram DM, not a chatbot loop.</p></div>
+    <div class="trust-card reveal"><h3>Secure Checkout</h3><p>Encrypted payment processing on every transaction, every time.</p></div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta">
+  <div class="final-cta-inner reveal">
+    <div class="eyebrow" style="justify-content:center;">Gate Closing Soon</div>
+    <h2>Boston's inner code<br>is ready. Are you in?</h2>
+    <p>Drop No. 009 is live in limited quantities. Once it's gone, it's gone until the next one lands.</p>
+    <div class="final-cta-row">
+      <button class="btn-primary" id="finalCtaBtn">Shop The Boston Drop</button>
+      <button class="btn-ghost" id="finalContactBtn">Get In Touch</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo"><span>TONNANO</span></div>
+      <p>Premium menswear, made in Morocco, delivered to Boston. True luxury is in the details.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#collection">Collection</a>
+      <a href="#about">About</a>
+      <a href="#boston">Boston Market</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#trust">Shipping &amp; Returns</a>
+      <a href="mailto:hello@tonnano.com">Contact Us</a>
+      <a href="https://tonnano.vercel.app/" target="_blank" rel="noopener">Global Site</a>
+    </div>
+    <div class="footer-col">
+      <h4>Follow</h4>
+      <a href="https://www.instagram.com/tonnanoma/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com/company/tonnanomorocco/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 TONNANO. Made in Morocco. Delivered to Boston.</span>
+    <span>Est. 2024</span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Boarding-pass loader: split-flap spelling BOSTON */
+  const word = "BOSTON";
+  const flapRow = document.getElementById('flapRow');
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  word.split('').forEach((ch, i)=>{
+    const flap = document.createElement('div');
+    flap.className = 'flap';
+    flap.textContent = chars[Math.floor(Math.random()*chars.length)];
+    flapRow.appendChild(flap);
+    if(!reduceMotion){
+      let ticks = 0;
+      const maxTicks = 10 + i*3;
+      const interval = setInterval(()=>{
+        ticks++;
+        if(ticks >= maxTicks){
+          flap.textContent = ch;
+          clearInterval(interval);
+        } else {
+          flap.textContent = chars[Math.floor(Math.random()*chars.length)];
+        }
+      }, 55);
+    } else {
+      flap.textContent = ch;
+    }
+  });
+
+  const boardDuration = reduceMotion ? 300 : 2200;
+  const wordmarkDuration = reduceMotion ? 300 : 2400;
+  document.body.style.overflow = 'hidden';
+
+  setTimeout(()=>{
+    document.getElementById('wordmarkReveal').classList.add('show');
+  }, boardDuration);
+
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hide');
+    document.body.style.overflow = '';
+  }, boardDuration + wordmarkDuration);
+
+  /* Header scroll state */
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', ()=>{
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* Mobile menu */
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', ()=>{
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{
+    burger.classList.remove('open'); mobileMenu.classList.remove('open');
+  }));
+
+  /* CTA buttons -> scroll to collection */
+  ['navCtaBtn','heroCtaBtn','finalCtaBtn'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('click', ()=>{
+      document.getElementById('collection').scrollIntoView({behavior:'smooth'});
+    });
+  });
+  const collectionCta = document.getElementById('collectionCtaBtn');
+  if(collectionCta) collectionCta.addEventListener('click', ()=>{
+    document.getElementById('collection').scrollIntoView({behavior:'smooth'});
+  });
+  const finalContact = document.getElementById('finalContactBtn');
+  if(finalContact) finalContact.addEventListener('click', ()=>{
+    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* Category tabs — smooth filtered transitions */
+  const catTabs = document.querySelectorAll('.cat-tab');
+  const collectionGrid = document.getElementById('collectionGrid');
+  catTabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      if(tab.classList.contains('active')) return;
+      catTabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = tab.dataset.cat;
+      collectionGrid.classList.add('switching');
+      setTimeout(()=>{
+        document.querySelectorAll('.product-card').forEach(card=>{
+          const show = cat === 'all' || card.dataset.cat === cat;
+          card.classList.toggle('hidden-cat', !show);
+        });
+        collectionGrid.classList.remove('switching');
+      }, reduceMotion ? 0 : 380);
+    });
+  });
+
+  /* Reveal on scroll */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
